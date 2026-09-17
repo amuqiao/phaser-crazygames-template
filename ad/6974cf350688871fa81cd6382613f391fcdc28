@@ -1,0 +1,145 @@
+src/dom/LoadingOverlay.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-36
+src/game/main.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-30
+materials/metadata.md
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-37
+scripts/check-boundaries.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-84
+src/main.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-31
+style.css
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-88
+vite/config.dev.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-10
+AGENTS.md
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-8
+.node-version
+  s_a5c644d0b83a19::t_36e386138cd0bd 1
+docs/architecture.md
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-50
+index.html
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-25
+scripts/crazygames-bundle-checks.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-179
+scripts/prepare-portal-upload.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-26
+src/game/composition.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-34
+docs/asset-license.csv
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-4
+src/game/theme.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-24
+src/platform/PlatformAdapter.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-44
+src/platform/crazygames.d.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-49
+src/game/tuning.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-25
+src/game/core/RunState.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-92
+tests/bundleChecks.test.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-89
+.npmrc
+  s_a5c644d0b83a19::t_36e386138cd0bd 1
+docs/qa-checklist.md
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-47
+package.json
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-35
+src/game/keys.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-19
+vite/config.prod.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-29
+.gitignore
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-6
+tests/fakes/InMemoryScoreRepository.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-23
+docs/runbooks/1.md
+  h_c16507691faf7b 1-276
+src/game/core/ScoreRepository.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-7
+src/game/scenes/MenuScene.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-54
+src/platform/adapters/web.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-56
+src/platform/adapters/crazygames.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-135
+src/game/viewport.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-7
+src/game/core/progressReporting.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-5
+scripts/build-zip.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-145
+scripts/prepare-portal-upload-full.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-4
+README.md
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-127
+scripts/prepare-portal-upload-basic.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-4
+src/game/scenes/BootScene.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-37
+src/game/scenes/ResultScene.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-69
+src/game/scenes/contracts.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-11
+src/game/ui/Button.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-35
+.codex/config.toml
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-3
+src/vite-env.d.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-10
+scripts/portal-upload-runner.mjs
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-27
+tests/progressReporting.test.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-11
+src/game/scenes/PlayScene.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-237
+tests/runState.test.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-104
+tsconfig.json
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-23
+docs/crazygames-submit-checklist.md
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-72
+src/platform/index.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-24
+src/game/effects/audio.ts
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-50
+docs/submission-log.csv
+  s_a5c644d0b83a19::t_36e386138cd0bd 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.2",
+  "base_commit_sha": "ad6974cf350688871fa81cd6382613f391fcdc28",
+  "prompts": {},
+  "humans": {
+    "h_c16507691faf7b": {
+      "author": "wangqiao <wangqiao@crazymaplestudio.com>"
+    }
+  },
+  "sessions": {
+    "s_a5c644d0b83a19": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "6aac0fc9a3f35911dee8f262",
+        "model": "Doubao-Seed-2.1-pro__dev"
+      },
+      "human_author": "wangqiao <wangqiao@crazymaplestudio.com>",
+      "custom_attributes": {
+        "original_file_count": "58",
+        "tool_name": "Shell",
+        "tool_use_id": "6aac2668a3f35911dee8f2a9",
+        "external_session_id": "6aac0fc9a3f35911dee8f262",
+        "checkpoint_content_bytes": "126202",
+        "operation_id": "6aac2668a3f35911dee8f2a9",
+        "display_model_name": "Doubao-Seed-2.1-Pro-0915",
+        "runtime_client": "trae-tob-git-ai",
+        "session_id": "6aac0fc9a3f35911dee8f262",
+        "included_file_count": "58",
+        "edit_kind": "bash",
+        "source_scene": "agent",
+        "client_type": "ide"
+      }
+    }
+  }
+}
