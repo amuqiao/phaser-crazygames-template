@@ -32,6 +32,7 @@ rsync -av \
   --exclude='node_modules' \
   --exclude='dist' \
   --exclude='submissions' \
+  --exclude='TEMPLATE-USAGE.md' \
   phaser-crazygames-template/ \
   pulse-dodger-v1/
 
