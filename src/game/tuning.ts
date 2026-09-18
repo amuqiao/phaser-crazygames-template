@@ -22,4 +22,5 @@ export const HAZARD = {
 export const RUN = {
   durationMs: 45_000,
   startGraceMs: 1000,
+  maxFrameDeltaMs: 250,
 };

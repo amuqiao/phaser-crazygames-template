@@ -1,33 +1,44 @@
 import { STORAGE_KEYS } from './keys';
-import type { ScoreRepository } from './core/ScoreRepository';
+import type { ScoreProgress, ScoreRepository } from './core/ScoreRepository';
 import { platform } from '../platform';
-
-const STORAGE_CHECK_KEY = `${STORAGE_KEYS.runsPlayed}.storageCheck`;
 
 export function assertScorePersistenceAvailable(): void {
   const marker = `ok-${Date.now()}`;
-  platform().save(STORAGE_CHECK_KEY, marker);
-  const saved = platform().load(STORAGE_CHECK_KEY);
+  platform().save(STORAGE_KEYS.storageCheck, marker);
+  const saved = platform().load(STORAGE_KEYS.storageCheck);
   if (saved !== marker) {
     throw new Error('Score persistence check failed. Save/load returned inconsistent data.');
   }
 }
 
+function validateProgress(value: unknown): ScoreProgress {
+  if (!value || typeof value !== 'object') {
+    throw new Error('Stored score progress is not an object.');
+  }
+
+  const progress = value as Record<string, unknown>;
+  const bestScore = progress.bestScore;
+  const runsPlayed = progress.runsPlayed;
+
+  if (typeof bestScore !== 'number' || !Number.isSafeInteger(bestScore) || bestScore < 0) {
+    throw new Error('Stored score progress has an invalid bestScore.');
+  }
+  if (typeof runsPlayed !== 'number' || !Number.isSafeInteger(runsPlayed) || runsPlayed < 0) {
+    throw new Error('Stored score progress has an invalid runsPlayed.');
+  }
+
+  return { bestScore, runsPlayed };
+}
+
 class PlatformScoreRepository implements ScoreRepository {
-  loadBestScore(): number {
-    return Number.parseInt(platform().load(STORAGE_KEYS.bestScore) ?? '0', 10) || 0;
+  loadProgress(): ScoreProgress {
+    const raw = platform().load(STORAGE_KEYS.progress);
+    if (raw === null) return { bestScore: 0, runsPlayed: 0 };
+    return validateProgress(JSON.parse(raw));
   }
 
-  saveBestScore(score: number): void {
-    platform().save(STORAGE_KEYS.bestScore, String(score));
-  }
-
-  loadRunsPlayed(): number {
-    return Number.parseInt(platform().load(STORAGE_KEYS.runsPlayed) ?? '0', 10) || 0;
-  }
-
-  saveRunsPlayed(runs: number): void {
-    platform().save(STORAGE_KEYS.runsPlayed, String(runs));
+  saveProgress(progress: ScoreProgress): void {
+    platform().save(STORAGE_KEYS.progress, JSON.stringify(progress));
   }
 }
 

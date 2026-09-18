@@ -17,16 +17,18 @@ export class RunState {
   private readonly scores: ScoreRepository;
   private scoreValue = 0;
   private elapsedValue = 0;
-  private bestScoreValue: number;
+  private bestScoreValue = 0;
+  private runsPlayedValue = 0;
   private initialLoadErrorMessage: string | undefined;
 
   constructor(scores: ScoreRepository) {
     this.scores = scores;
     try {
-      this.bestScoreValue = scores.loadBestScore();
+      const progress = scores.loadProgress();
+      this.bestScoreValue = progress.bestScore;
+      this.runsPlayedValue = progress.runsPlayed;
     } catch (error) {
       this.initialLoadErrorMessage = error instanceof Error ? error.message : String(error);
-      this.bestScoreValue = 0;
     }
   }
 
@@ -55,23 +57,20 @@ export class RunState {
   }
 
   tick(deltaMs: number): void {
-    this.elapsedValue += Math.max(0, deltaMs);
+    this.elapsedValue += Math.max(0, Math.min(deltaMs, RUN.maxFrameDeltaMs));
   }
 
   finish(): FinishResult {
     const previousBest = this.bestScoreValue;
     const isNewBest = this.scoreValue > previousBest;
     const bestScore = isNewBest ? this.scoreValue : previousBest;
-    let runsPlayed = 0;
+    const runsPlayed = this.runsPlayedValue + 1;
     let saveErrorMessage = this.initialLoadErrorMessage;
 
     try {
-      runsPlayed = this.scores.loadRunsPlayed() + 1;
-      if (isNewBest) {
-        this.scores.saveBestScore(bestScore);
-        this.bestScoreValue = bestScore;
-      }
-      this.scores.saveRunsPlayed(runsPlayed);
+      this.scores.saveProgress({ bestScore, runsPlayed });
+      this.bestScoreValue = bestScore;
+      this.runsPlayedValue = runsPlayed;
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       saveErrorMessage = saveErrorMessage ? `${saveErrorMessage}; ${message}` : message;

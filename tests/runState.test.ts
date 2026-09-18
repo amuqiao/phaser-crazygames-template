@@ -2,23 +2,18 @@ import { strict as assert } from 'node:assert';
 import test from 'node:test';
 import { RUN } from '../src/game/tuning.ts';
 import { RunState } from '../src/game/core/RunState.ts';
+import type { ScoreProgress } from '../src/game/core/ScoreRepository.ts';
 import { InMemoryScoreRepository } from './fakes/InMemoryScoreRepository.ts';
 
-class ThrowingLoadBestScoreRepository extends InMemoryScoreRepository {
-  override loadBestScore(): number {
-    throw new Error('best score load failed');
+class ThrowingLoadProgressRepository extends InMemoryScoreRepository {
+  override loadProgress(): ScoreProgress {
+    throw new Error('progress load failed');
   }
 }
 
-class ThrowingSaveRepository extends InMemoryScoreRepository {
-  override saveRunsPlayed(_runs: number): void {
+class ThrowingSaveProgressRepository extends InMemoryScoreRepository {
+  override saveProgress(_progress: ScoreProgress): void {
     throw new Error('storage disabled');
-  }
-}
-
-class ThrowingLoadRunsRepository extends InMemoryScoreRepository {
-  override loadRunsPlayed(): number {
-    throw new Error('load failed');
   }
 }
 
@@ -37,7 +32,7 @@ test('hazard penalty never makes score negative', () => {
 
 test('finish writes a new best score and preserves previous best', () => {
   const repo = new InMemoryScoreRepository();
-  repo.saveBestScore(10);
+  repo.saveProgress({ bestScore: 10, runsPlayed: 0 });
   const state = new RunState(repo);
   state.collect();
   state.collect();
@@ -48,32 +43,33 @@ test('finish writes a new best score and preserves previous best', () => {
   assert.equal(result.previousBest, 10);
   assert.equal(result.bestScore, 20);
   assert.equal(result.progressSaved, true);
-  assert.equal(repo.loadBestScore(), 20);
+  assert.deepEqual(repo.loadProgress(), { bestScore: 20, runsPlayed: 1 });
 });
 
-test('finish increments runs played', () => {
+test('finish increments runs played atomically with best score', () => {
   const repo = new InMemoryScoreRepository();
   new RunState(repo).finish();
   const second = new RunState(repo).finish();
   assert.equal(second.runsPlayed, 2);
   assert.equal(second.progressSaved, true);
-  assert.equal(repo.loadRunsPlayed(), 2);
+  assert.deepEqual(repo.loadProgress(), { bestScore: 0, runsPlayed: 2 });
 });
 
-test('finish returns a visible unsaved result when best score load fails', () => {
-  const state = new RunState(new ThrowingLoadBestScoreRepository());
+test('finish returns a visible unsaved result when progress load fails', () => {
+  const state = new RunState(new ThrowingLoadProgressRepository());
   state.collect();
 
   const result = state.finish();
 
   assert.equal(result.score, 10);
   assert.equal(result.bestScore, 10);
+  assert.equal(result.runsPlayed, 1);
   assert.equal(result.progressSaved, false);
-  assert.equal(result.saveErrorMessage, 'best score load failed');
+  assert.equal(result.saveErrorMessage, 'progress load failed');
 });
 
-test('finish returns a visible unsaved result when persistence save fails', () => {
-  const state = new RunState(new ThrowingSaveRepository());
+test('finish returns a visible unsaved result when progress save fails', () => {
+  const state = new RunState(new ThrowingSaveProgressRepository());
   state.collect();
 
   const result = state.finish();
@@ -84,21 +80,17 @@ test('finish returns a visible unsaved result when persistence save fails', () =
   assert.equal(result.saveErrorMessage, 'storage disabled');
 });
 
-test('finish returns a visible unsaved result when persistence read fails', () => {
-  const state = new RunState(new ThrowingLoadRunsRepository());
-  state.collect();
-
-  const result = state.finish();
-
-  assert.equal(result.score, 10);
-  assert.equal(result.runsPlayed, 0);
-  assert.equal(result.progressSaved, false);
-  assert.equal(result.saveErrorMessage, 'load failed');
-});
-
 test('progress is clamped to one', () => {
   const state = new RunState(new InMemoryScoreRepository());
-  state.tick(RUN.durationMs * 2);
+  for (let elapsed = 0; elapsed < RUN.durationMs * 2; elapsed += RUN.maxFrameDeltaMs) {
+    state.tick(RUN.maxFrameDeltaMs);
+  }
   assert.equal(state.progress, 1);
   assert.equal(state.complete, true);
+});
+
+test('large frame delta is capped', () => {
+  const state = new RunState(new InMemoryScoreRepository());
+  state.tick(RUN.durationMs * 2);
+  assert.equal(state.elapsedMs, RUN.maxFrameDeltaMs);
 });

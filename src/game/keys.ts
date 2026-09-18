@@ -13,7 +13,6 @@ export const TEXTURES = {
 } as const;
 
 export const STORAGE_KEYS = {
-  bestScore: 'phaser-cg-template.bestScore',
-  runsPlayed: 'phaser-cg-template.runsPlayed',
+  progress: 'phaser-cg-template.progress.v1',
+  storageCheck: 'phaser-cg-template.storageCheck',
 } as const;
-
