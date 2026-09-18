@@ -100,7 +100,7 @@ Only use the Full Launch command after you have implemented and tested the real 
 
 The template loads CrazyGames SDK v3 in `index.html`. The adapter only accepts SDK environments `local` and `crazygames`. For phone LAN testing with an address like `http://192.168.x.x:8080`, append `?useLocalSdk=true`; otherwise the SDK may report `disabled` and the template will stop with a clear error.
 
-The default demo persists `bestScore` and `runsPlayed` through the platform adapter, and bootstrap performs a storage self-check. If you submit this flow to CrazyGames, select `Save progress: Yes, using the Data Module from the CrazyGames SDK`. If your real game does not save progress, remove `platform().save/load` usage and `assertScorePersistenceAvailable()` first, then select `No`.
+The default demo persists one progress record containing `bestScore` and `runsPlayed` through the platform adapter, and bootstrap performs a storage self-check. If you submit this flow to CrazyGames, select `Save progress: Yes, using the Data Module from the CrazyGames SDK`. If your real game does not save progress, remove `platform().save/load` usage and `assertScorePersistenceAvailable()` first, then select `No`.
 
 ## How To Create A New Game From This Template
 
