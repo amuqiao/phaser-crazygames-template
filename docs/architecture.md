@@ -52,6 +52,14 @@ npm scripts -> scripts/run.sh -> focused leaf scripts -> scripts/lib/common.sh
 
 `scripts/run.sh` is the stable human-facing recipe entrypoint. Leaf scripts such as `scripts/dev.sh` own one thing and should fail loudly on invalid runtime state. Runtime PID, port, and log files belong in `.run/`.
 
+See `../scripts/README.md` for recipe naming, exit codes, runtime files, and extension rules.
+
+## Runtime Lifecycle
+
+Pause, ads, hitstop, slow motion, and global listeners are runtime concerns, not pure rules. Keep those systems out of `src/game/core`, and pair every pause/mute/listener action with a restore or cleanup path.
+
+See `runtime-lifecycle.md` for the reusable lifecycle rules.
+
 ## Why Phaser 3
 
 This template intentionally uses Phaser 3.90.0. The official Vite template may track newer Phaser releases, but the Phaser 3 ecosystem has broader examples and matches the proven Pulse Dodger path used for CrazyGames submission practice.
@@ -74,4 +82,3 @@ window.CrazyGames.SDK...
 ```
 
 That is the part you reuse when publishing to another platform: add a new adapter and keep gameplay mostly unchanged.
-

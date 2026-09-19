@@ -67,6 +67,27 @@ materials/covers/         最终 cover
 materials/videos/         preview video
 ```
 
+## 新游戏初始化清单
+
+复制模板后，用这份清单把“模板身份”替换成“游戏身份”：
+
+| 文件或目录 | 必改内容 | 原因 |
+| --- | --- | --- |
+| `package.json` | `name`、`description` | 构建产物、文档和提交记录要指向真实游戏。 |
+| `src/game/keys.ts` | `STORAGE_KEYS` | 每款游戏必须有唯一存档 key，避免同域调试时互相覆盖。 |
+| `src/game/theme.ts` | 标题、英文 UI 文案、颜色 | 默认文案只是 demo，不能带去公开审核。 |
+| `src/game/core/RunState.ts` | 玩法规则、结算字段、进度保存语义 | 纯规则层必须表达真实游戏，而不是模板 demo。 |
+| `src/game/scenes/contracts.ts` | 场景 payload 类型 | 新增场景或结算字段时，让跳转数据继续受 TypeScript 保护。 |
+| `src/game/scenes/PlayScene.ts` | 实际玩法编排 | demo 只证明工程链路可运行。 |
+| `materials/metadata.md` | 商店标题、简介、说明、标签 | Portal 提交前不能保留 TODO 或模板描述。 |
+| `materials/screenshots/` | 最终截图 | 必须反映真实游戏画面。 |
+| `materials/covers/` | 横版、竖版、方形 cover | CrazyGames 展示素材不能使用模板占位。 |
+| `materials/videos/` | preview video | 视频必须来自真实玩法。 |
+| `docs/asset-license.csv` | 素材来源和授权 | 审核和后续维护都需要可追溯。 |
+| `docs/submission-log.csv` | 每次上传记录 | 记录版本、上传时间、审核反馈和修复动作。 |
+
+脚本扩展按 [scripts/README.md](scripts/README.md) 的范式做：新增 leaf script，再接入 `scripts/run.sh`，最后按需加 npm alias。不要直接把长命令堆进 `package.json`。
+
 ## 提交前最小验证
 
 ```bash
