@@ -61,7 +61,12 @@ npm ci
 | 命令 | 什么时候用 | 作用 |
 | --- | --- | --- |
 | `npm ci` | 第一次拉项目、换机器、依赖变更后 | 按 `package-lock.json` 安装依赖。 |
-| `npm run dev` | 日常开发 | 启动 Vite 开发服务器，默认地址是 `http://localhost:8080`。 |
+| `npm run dev` | 日常开发 | 受管启动 Vite 开发服务器，固定 `http://127.0.0.1:8080`，端口占用时直接失败。 |
+| `npm run dev:status` | 不确定服务是否已启动时 | 查看 `.run/dev.pid`、`.run/dev.port` 和服务状态。 |
+| `npm run dev:stop` | 停止本地游戏服务时 | 只停止 `.run/dev.pid` 记录的本项目 Vite 进程；如果同项目 Vite 占着 8080 但 pid 文件丢失，也会清理这个 orphan。 |
+| `npm run dev:restart` | 本地服务状态不干净时 | 先停止再启动本项目 Vite 服务。 |
+| `npm run dev:logs` | 启动失败或排查 HMR 时 | 跟随查看 `.run/dev.log`。 |
+| `npm run dev:raw` | 排查脚本本身时 | 前台直接运行 Vite，同样固定 8080 且不自动换端口。 |
 | `npm run build` | 提交前、上传前 | 依次运行边界检查、测试、TypeScript 类型检查和生产构建。 |
 | `npm run preview` | 上传前人工验收 | 预览生产构建结果，默认地址是 `http://localhost:8081`。 |
 | `npm run portal:upload` | CrazyGames Basic Launch 上传前 | 构建广告关闭版本，并生成 `submissions/portal-upload/`。 |
@@ -91,6 +96,21 @@ materials/covers/        横版、竖版、方形 cover。
 materials/videos/        横版和竖版 preview video。
 style.css                Phaser canvas 外层页面样式。
 ```
+
+## 脚本维护范式
+
+模板只内置一个受管服务：`dev`。脚本分三层：
+
+```text
+npm scripts            面向日常使用，例如 npm run dev:status
+scripts/run.sh         稳定 recipe 入口，例如 up/down/status dev
+scripts/dev.sh         单一职责叶子脚本，只管理 Vite dev server
+scripts/lib/common.sh  统一输出、错误和 help 参数处理
+```
+
+每个真实游戏可以按需新增 recipe，例如 `assets`、`smoke`、`deploy`，但不要把所有逻辑塞进 `package.json`。新增范式是：先写一个职责单一的叶子脚本，再在 `scripts/run.sh` 暴露稳定 recipe，最后加 npm 别名。
+
+本模板刻意固定 `127.0.0.1:8080` 并使用 `--strictPort`。端口占用时失败，不自动换端口，这样日志、浏览器地址、手机测试和自动化检查都能保持一致。受管运行态文件写在 `.run/`，不会提交进 git。
 
 ## CrazyGames 模式
 
@@ -123,7 +143,11 @@ npm run portal:upload:full
 
 ## 提交相关文档
 
+- `TEMPLATE-USAGE.md`: 从模板复制新游戏仓库的流程和初始化清单。
+- `scripts/README.md`: 脚本 recipe 分层和扩展范式。
 - `docs/architecture.md`: 分层设计说明。
+- `docs/runtime-lifecycle.md`: pause、广告、平台生命周期和监听清理规则。
+- `docs/template-hardening.md`: 哪些实战经验能回流模板，哪些必须留在游戏项目。
 - `docs/qa-checklist.md`: 上传前 QA 检查清单。
 - `docs/crazygames-submit-checklist.md`: CrazyGames Developer Portal 提交流程。
 - `docs/asset-license.csv`: 素材授权记录。

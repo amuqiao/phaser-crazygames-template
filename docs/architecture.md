@@ -42,6 +42,16 @@ Avoid direct string keys such as `this.scene.start('Result', data)`. The contrac
 
 Use `advanceSpawnTime(nextAt, now, interval)` for timer-like spawning. It advances from the scheduled timestamp, not from the late frame timestamp, so spawn cadence does not drift with refresh rate. If a scene stalls for too long, it drops the backlog instead of burst-spawning several waves.
 
+## Script Layers
+
+Keep scripts layered:
+
+```text
+npm scripts -> scripts/run.sh -> focused leaf scripts -> scripts/lib/common.sh
+```
+
+`scripts/run.sh` is the stable human-facing recipe entrypoint. Leaf scripts such as `scripts/dev.sh` own one thing and should fail loudly on invalid runtime state. Runtime PID, port, and log files belong in `.run/`.
+
 ## Why Phaser 3
 
 This template intentionally uses Phaser 3.90.0. The official Vite template may track newer Phaser releases, but the Phaser 3 ecosystem has broader examples and matches the proven Pulse Dodger path used for CrazyGames submission practice.
