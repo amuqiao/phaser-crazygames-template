@@ -5,6 +5,7 @@ import { TEXTURES, SCENES } from '../keys';
 import { hex, THEME } from '../theme';
 import { RunState } from '../core/RunState.ts';
 import { completionReportPercent } from '../core/progressReporting.ts';
+import { advanceSpawnTime } from '../core/spawnClock.ts';
 import { scores } from '../composition';
 import { platform } from '../../platform';
 import { audio } from '../effects/audio';
@@ -80,11 +81,11 @@ export class PlayScene extends Phaser.Scene {
 
     if (activeElapsedMs >= this.nextCollectibleAt) {
       this.spawnCollectible();
-      this.nextCollectibleAt = activeElapsedMs + COLLECTIBLE.spawnMs;
+      this.nextCollectibleAt = advanceSpawnTime(this.nextCollectibleAt, activeElapsedMs, COLLECTIBLE.spawnMs);
     }
     if (activeElapsedMs >= this.nextHazardAt) {
       this.spawnHazard();
-      this.nextHazardAt = activeElapsedMs + HAZARD.spawnMs;
+      this.nextHazardAt = advanceSpawnTime(this.nextHazardAt, activeElapsedMs, HAZARD.spawnMs);
     }
 
     this.scoreText.setText(`Score ${this.state.score}  Time ${Math.ceil((RUN.durationMs - this.state.elapsedMs) / 1000)}`);

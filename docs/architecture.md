@@ -25,6 +25,10 @@ Keep these boundaries:
 | `src/game/core/` | Pure rules and state transitions | Browser, Phaser, platform SDK |
 | `scripts/` | Build, package, upload-folder checks | Gameplay behavior |
 
+## Spawn Timing
+
+Use `advanceSpawnTime(nextAt, now, interval)` for timer-like spawning. It advances from the scheduled timestamp, not from the late frame timestamp, so spawn cadence does not drift with refresh rate. If a scene stalls for too long, it drops the backlog instead of burst-spawning several waves.
+
 ## Why Phaser 3
 
 This template intentionally uses Phaser 3.90.0. The official Vite template may track newer Phaser releases, but the Phaser 3 ecosystem has broader examples and matches the proven Pulse Dodger path used for CrazyGames submission practice.
