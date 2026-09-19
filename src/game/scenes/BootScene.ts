@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
-import { TEXTURES, SCENES } from '../keys';
+import { TEXTURES } from '../keys';
 import { hex, THEME } from '../theme';
 import { platform } from '../../platform';
 import { audio } from '../effects/audio';
+import { SCENES } from './contracts';
+import { startScene } from './transition';
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -23,7 +25,7 @@ export class BootScene extends Phaser.Scene {
     audio.bindPlatformSettings();
     platform().loadingStop();
     this.game.events.emit('boot-complete');
-    this.scene.start(SCENES.Menu);
+    startScene(this, SCENES.Menu);
   }
 
   private createCircleTexture(key: string, radius: number, color: number): void {
@@ -34,4 +36,3 @@ export class BootScene extends Phaser.Scene {
     graphics.destroy();
   }
 }
-

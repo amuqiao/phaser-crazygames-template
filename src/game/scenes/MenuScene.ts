@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
-import { SCENES } from '../keys';
 import { hex, THEME } from '../theme';
 import { GAME_HEIGHT, GAME_WIDTH, u } from '../viewport';
 import { createButton } from '../ui/Button';
 import { platform } from '../../platform';
+import { SCENES } from './contracts';
+import { fadeInScene, fadeToScene } from './transition';
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -12,6 +13,7 @@ export class MenuScene extends Phaser.Scene {
 
   create(): void {
     platform().gameplayStop();
+    fadeInScene(this);
 
     this.cameras.main.setBackgroundColor(THEME.color.background);
     this.add
@@ -47,8 +49,7 @@ export class MenuScene extends Phaser.Scene {
       y: GAME_HEIGHT / 2 + u(55),
       width: u(220),
       height: u(64),
-      onClick: () => this.scene.start(SCENES.Play),
+      onClick: () => fadeToScene(this, SCENES.Play),
     });
   }
 }
-

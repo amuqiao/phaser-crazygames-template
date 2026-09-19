@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { COLLECTIBLE, HAZARD, PLAYER, RUN } from '../tuning';
 import { GAME_HEIGHT, GAME_WIDTH, u } from '../viewport';
-import { TEXTURES, SCENES } from '../keys';
+import { TEXTURES } from '../keys';
 import { hex, THEME } from '../theme';
 import { RunState } from '../core/RunState.ts';
 import { completionReportPercent } from '../core/progressReporting.ts';
@@ -9,7 +9,8 @@ import { advanceSpawnTime } from '../core/spawnClock.ts';
 import { scores } from '../composition';
 import { platform } from '../../platform';
 import { audio } from '../effects/audio';
-import type { ResultData } from './contracts';
+import { SCENES, type ResultData } from './contracts';
+import { fadeToScene } from './transition';
 
 type PlayPhase = 'playing' | 'paused' | 'finished';
 
@@ -233,6 +234,6 @@ export class PlayScene extends Phaser.Scene {
     if (result.isNewBest) {
       platform().happyTime();
     }
-    this.scene.start(SCENES.Result, result);
+    fadeToScene(this, SCENES.Result, result);
   }
 }

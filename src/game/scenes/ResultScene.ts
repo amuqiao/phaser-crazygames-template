@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
-import { SCENES } from '../keys';
 import { hex, THEME } from '../theme';
 import { GAME_HEIGHT, GAME_WIDTH, u } from '../viewport';
 import { createButton } from '../ui/Button';
-import type { ResultData } from './contracts';
+import { SCENES, type ResultData } from './contracts';
+import { fadeInScene, fadeToScene } from './transition';
 
 export class ResultScene extends Phaser.Scene {
   private result!: ResultData;
@@ -17,6 +17,7 @@ export class ResultScene extends Phaser.Scene {
   }
 
   create(): void {
+    fadeInScene(this);
     this.cameras.main.setBackgroundColor(THEME.color.background);
     this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, u(560), u(380), hex(THEME.color.panel), 0.94).setStrokeStyle(
       u(2),
@@ -63,7 +64,7 @@ Runs ${this.result.runsPlayed}`, {
       y: GAME_HEIGHT / 2 + u(145),
       width: u(260),
       height: u(64),
-      onClick: () => this.scene.start(SCENES.Play),
+      onClick: () => fadeToScene(this, SCENES.Play),
     });
   }
 }

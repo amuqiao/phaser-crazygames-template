@@ -25,6 +25,19 @@ Keep these boundaries:
 | `src/game/core/` | Pure rules and state transitions | Browser, Phaser, platform SDK |
 | `scripts/` | Build, package, upload-folder checks | Gameplay behavior |
 
+## Scene Contracts
+
+Scene keys and scene payloads live in `src/game/scenes/contracts.ts`.
+
+Use:
+
+```text
+fadeToScene(this, SCENES.Result, result)
+startScene(this, SCENES.Menu)
+```
+
+Avoid direct string keys such as `this.scene.start('Result', data)`. The contract file is the single place that says which scene accepts which payload shape. The transition helper also disables input during camera fade-out, so one fast double click cannot start the same scene twice.
+
 ## Spawn Timing
 
 Use `advanceSpawnTime(nextAt, now, interval)` for timer-like spawning. It advances from the scheduled timestamp, not from the late frame timestamp, so spawn cadence does not drift with refresh rate. If a scene stalls for too long, it drops the backlog instead of burst-spawning several waves.
