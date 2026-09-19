@@ -20,12 +20,20 @@ pulse-dodger-v1
 
 ## 创建新游戏仓库
 
-以空仓库 `git@github.com:amuqiao/pulse-dodger-v1.git` 为例，直接执行：
+只改顶部变量区，然后整段复制粘贴执行：
 
 ```bash
-cd /Users/admin/Code/Game
+GAME_ROOT="/Users/admin/Code/Game"
+TEMPLATE_DIR="phaser-crazygames-template"
 
-git clone git@github.com:amuqiao/pulse-dodger-v1.git
+GAME_DIR="pulse-dodger-v1"
+GAME_REPO="git@github.com:amuqiao/pulse-dodger-v1.git"
+PACKAGE_NAME="pulse-dodger-v1"
+GAME_DESCRIPTION="Pulse Dodger v1"
+
+cd "$GAME_ROOT"
+
+git clone "$GAME_REPO"
 
 rsync -av \
   --exclude='.git' \
@@ -33,17 +41,28 @@ rsync -av \
   --exclude='dist' \
   --exclude='submissions' \
   --exclude='TEMPLATE-USAGE.md' \
-  phaser-crazygames-template/ \
-  pulse-dodger-v1/
+  "$TEMPLATE_DIR"/ \
+  "$GAME_DIR"/
 
-cd pulse-dodger-v1
+cd "$GAME_DIR"
 
-npm pkg set name="pulse-dodger-v1" description="Pulse Dodger v1"
+npm pkg set name="$PACKAGE_NAME" description="$GAME_DESCRIPTION"
 npm install --package-lock-only
 npm ci
 npm run build
 npm run portal:upload
 ```
+
+变量怎么改：
+
+| 变量 | 改什么 |
+| --- | --- |
+| `GAME_ROOT` | 模板仓库和新游戏仓库所在目录。 |
+| `TEMPLATE_DIR` | 模板目录名，默认是 `phaser-crazygames-template`。 |
+| `GAME_DIR` | 新游戏目录名，通常等于仓库名。 |
+| `GAME_REPO` | 新游戏空仓库地址。 |
+| `PACKAGE_NAME` | `package.json` 里的包名，通常等于 `GAME_DIR`。 |
+| `GAME_DESCRIPTION` | `package.json` 里的描述。 |
 
 如果这个文件已经复制到了真实游戏仓库，确认上面的命令跑通后可以删除：
 
